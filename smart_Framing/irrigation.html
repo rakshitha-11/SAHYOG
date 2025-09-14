@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Irrigation Calculator - Smart Irrigation System</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/pages.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Logo styling */
+        .logo-img {
+            height: 40px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        .nav-brand h1 {
+            display: flex;
+            align-items: center;
+            color: #4CAF50;
+            font-weight: 700;
+        }
+        
+        /* Irrigation calculator section */
+        .irrigation-calculator {
+            padding: 4rem 0;
+        }
+        
+        .calculator-container {
+            display: flex;
+            gap: 2rem;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .calculator-form, .calculator-result {
+            flex: 1;
+            padding: 1.5rem;
+        }
+        
+        .calculator-form {
+            border-right: 1px solid #e0e0e0;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #2E7D32;
+        }
+        
+        .form-group select, .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+        }
+        
+        .calculator-result {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .result-placeholder {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #666;
+        }
+        
+        .result-placeholder i {
+            font-size: 3rem;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+        
+        .water-result {
+            padding: 1.5rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .water-result i {
+            font-size: 2.5rem;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+        
+        .water-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2E7D32;
+            margin: 1rem 0;
+        }
+        
+        .recommendation {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .recommendation h5 {
+            color: #2E7D32;
+            margin-bottom: 0.5rem;
+        }
+        
+        .error {
+            color: #f44336;
+            text-align: center;
+            padding: 1rem;
+            background: #ffebee;
+            border-radius: 6px;
+        }
+        
+        .success {
+            background: #e8f5e9;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        /* Water Tips section with background image */
+        .water-tips {
+            position: relative;
+            padding: 4rem 0;
+            background-image: url('images/bigirrigation.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+        }
+        
+        .water-tips::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1;
+        }
+        
+        .water-tips .container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .water-tips h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            justify-content: center;
+        }
+        
+        .tip-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            color: #333;
+        }
+        
+        .tip-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .tip-card i {
+            font-size: 2.5rem;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+        
+        .tip-card h3 {
+            color: #2E7D32;
+            margin-bottom: 1rem;
+        }
+        
+        /* Center all tip cards properly */
+        @media (min-width: 1200px) {
+            .tips-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 2rem;
+            }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1199px) {
+            .tips-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .calculator-container {
+                flex-direction: column;
+            }
+            
+            .calculator-form {
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+            
+            .tips-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="irrigation-page">
+    <!-- Header Section -->
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1><img src="images/logo.png" alt="SAHYOG Logo" class="logo-img">SAHYOG</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="disease.html">Crop Disease</a></li>
+                <li><a href="irrigation.html" class="active">Smart Irrigation</a></li>
+                <li><a href="market.html">Market Price</a></li>
+                <li><a href="#" id="login-btn">Sign In</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Smart Irrigation Calculator</h1>
+        <p>Calculate optimal water requirements based on soil type, weather conditions, and crop type</p>
+    </section>
+
+    <!-- Irrigation Calculator Section -->
+    <section class="irrigation-calculator">
+        <div class="container">
+            <div class="calculator-container">
+                <div class="calculator-form">
+                    <h2>Calculate Water Needs</h2>
+                    <p>Fill in the details below to get personalized irrigation recommendations</p>
+                    
+                    <div class="form-group">
+                        <label for="soilType">Soil Type</label>
+                        <select id="soilType">
+                            <option value="">Select Soil Type</option>
+                            <option value="sandy">Sandy</option>
+                            <option value="loamy">Loamy</option>
+                            <option value="clay">Clay</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="weather">Weather Condition</label>
+                        <select id="weather">
+                            <option value="">Select Weather</option>
+                            <option value="sunny">Sunny</option>
+                            <option value="cloudy">Cloudy</option>
+                            <option value="rainy">Rainy</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cropType">Crop Type</label>
+                        <select id="cropType">
+                            <option value="">Select Crop Type</option>
+                            <option value="wheat">Wheat</option>
+                            <option value="rice">Rice</option>
+                            <option value="tomato">Tomato</option>
+                            <option value="corn">Corn</option>
+                            <option value="cotton">Cotton</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cropStage">Crop Growth Stage</label>
+                        <select id="cropStage">
+                            <option value="">Select Growth Stage</option>
+                            <option value="initial">Initial Stage</option>
+                            <option value="development">Development Stage</option>
+                            <option value="mid-season">Mid-Season</option>
+                            <option value="late-season">Late Season</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="area">Field Area (acres)</label>
+                        <input type="number" id="area" placeholder="Enter field area">
+                    </div>
+                    
+                    <button class="btn primary" id="calculateBtn">Calculate Water Needs</button>
+                </div>
+                
+                <div class="calculator-result" id="irrigationResult">
+                    <h3>Irrigation Recommendation</h3>
+                    <div class="result-placeholder" id="waterResult">
+                        <i class="fas fa-tint"></i>
+                        <p>Fill the form to calculate water requirements</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Water Saving Tips -->
+    <section class="water-tips">
+        <div class="container">
+            <h2>Water Saving Tips</h2>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Time Your Irrigation</h3>
+                    <p>Water early in the morning or late in the evening to reduce evaporation losses</p>
+                </div>
+                <div class="tip-card">
+                    <i class="fas fa-tint-slash"></i>
+                    <h3>Use Drip Irrigation</h3>
+                    <p>Drip systems deliver water directly to plant roots, reducing waste</p>
+                </div>
+                <div class="tip-card">
+                    <i class="fas fa-cloud-rain"></i>
+                    <h3>Monitor Rainfall</h3>
+                    <p>Adjust irrigation based on recent and forecasted rainfall</p>
+                </div>
+                <div class="tip-card">
+                    <i class="fas fa-seedling"></i>
+                    <h3>Mulch Your Soil</h3>
+                    <p>Mulching helps retain soil moisture and reduce water needs</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Irrigation Calculator Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const calculateBtn = document.getElementById('calculateBtn');
+            const irrigationResult = document.getElementById('irrigationResult');
+            const waterResult = document.getElementById('waterResult');
+            
+            calculateBtn.addEventListener('click', function() {
+                const soilType = document.getElementById('soilType').value;
+                const weather = document.getElementById('weather').value;
+                const cropType = document.getElementById('cropType').value;
+                const cropStage = document.getElementById('cropStage').value;
+                const area = document.getElementById('area').value;
+                
+                if (!soilType || !weather || !cropType || !cropStage || !area) {
+                    waterResult.innerHTML = '<div class="error">Please fill all fields</div>';
+                    return;
+                }
+                
+                // Base water requirements (mm per day)
+                const baseWater = {
+                    wheat: { initial: 2.5, development: 4.5, midseason: 6.5, lateseason: 3.5 },
+                    rice: { initial: 4.5, development: 7.0, midseason: 9.5, lateseason: 6.0 },
+                    tomato: { initial: 2.0, development: 4.0, midseason: 6.5, lateseason: 4.5 },
+                    corn: { initial: 2.5, development: 5.0, midseason: 7.5, lateseason: 5.0 },
+                    cotton: { initial: 2.0, development: 5.5, midseason: 8.0, lateseason: 4.5 }
+                };
+                
+                // Soil factors
+                const soilFactors = {
+                    sandy: 1.3,
+                    loamy: 1.0,
+                    clay: 0.8
+                };
+                
+                // Weather factors
+                const weatherFactors = {
+                    sunny: 1.5,
+                    cloudy: 1.0,
+                    rainy: 0.5
+                };
+                
+                // Convert stage to match our data keys
+                const stageKey = cropStage.replace('-', '');
+                
+                // Calculate water need (mm per day)
+                const waterNeed = baseWater[cropType][stageKey] * soilFactors[soilType] * weatherFactors[weather];
+                
+                // Convert mm/day to liters/acre/day (1 mm = 10 m³ per hectare = 4046.86 gallons per acre)
+                // Simplified: 1 mm/day = 4,046.86 liters/acre/day
+                const litersPerAcre = waterNeed * 4046.86;
+                const totalLiters = litersPerAcre * area;
+                
+                // Convert to more readable units
+                const cubicMeters = totalLiters / 1000;
+                
+                // Generate recommendation
+                let recommendation = '';
+                if (weather === 'rainy') {
+                    recommendation = 'No irrigation needed today due to rainfall.';
+                } else if (weather === 'cloudy') {
+                    recommendation = 'Reduce irrigation duration due to cloud cover.';
+                } else {
+                    recommendation = 'Irrigate as recommended below.';
+                }
+                
+                waterResult.innerHTML = `
+                    <div class="water-result success">
+                        <i class="fas fa-tint"></i>
+                        <h4>Water Requirement</h4>
+                        <p>Your <strong>${cropType}</strong> crop needs approximately</p>
+                        <p class="water-amount">${waterNeed.toFixed(1)} mm per day</p>
+                        <p>That's about <strong>${cubicMeters.toFixed(0)} m³</strong> for your ${area} acre field</p>
+                        <div class="recommendation">
+                            <h5>Recommendation:</h5>
+                            <p>${recommendation}</p>
+                            <p>Best time to irrigate: Early morning (5-8 AM)</p>
+                        </div>
+                    </div>
+                `;
+            });
+        });
+    </script>
+</body>
+</html>

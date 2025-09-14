@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Price Optimizer - Smart Irrigation System</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/pages.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Logo styling */
+        .logo-img {
+            height: 40px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        .nav-brand h1 {
+            display: flex;
+            align-items: center;
+            color: #4CAF50;
+            font-weight: 700;
+        }
+        
+        /* Market trends section with background image */
+        .market-trends {
+            position: relative;
+            padding: 4rem 0;
+            background-image: url('images/bigmarket.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+        }
+        
+        .market-trends::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1;
+        }
+        
+        .market-trends .container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .market-trends h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .trends-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .trend-chart, .top-markets {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
+        
+        .trend-chart h3, .top-markets h3 {
+            color: #2E7D32;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .chart-container {
+            height: 250px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .chart-controls {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .market-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .market-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .market-info h4 {
+            color: #2E7D32;
+            margin-bottom: 0.5rem;
+        }
+        
+        .market-info p {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        
+        .rating {
+            background: #4CAF50;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .trends-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Market price section styling */
+        .market-price {
+            padding: 4rem 0;
+        }
+        
+        .market-container {
+            display: flex;
+            gap: 2rem;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .market-form, .market-result {
+            flex: 1;
+            padding: 1.5rem;
+        }
+        
+        .market-form {
+            border-right: 1px solid #e0e0e0;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #2E7D32;
+        }
+        
+        .form-group select, .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+        }
+        
+        .location-input {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .location-input input {
+            flex: 1;
+        }
+        
+        .market-result {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .result-placeholder {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #666;
+        }
+        
+        .result-placeholder i {
+            font-size: 3rem;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+        
+        .price-comparison {
+            width: 100%;
+        }
+        
+        .best-option {
+            background: #e8f5e9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .best-option h4 {
+            color: #2E7D32;
+            margin-bottom: 1rem;
+        }
+        
+        .price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2E7D32;
+            margin: 1rem 0;
+        }
+        
+        .extra-profit {
+            color: #4CAF50;
+            font-weight: 600;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        
+        table th, table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        table th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        .recommendation {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        
+        .recommendation h5 {
+            color: #2E7D32;
+            margin-bottom: 0.5rem;
+        }
+        
+        .error {
+            color: #f44336;
+            text-align: center;
+            padding: 1rem;
+            background: #ffebee;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body class="market-page">
+    <!-- Header Section -->
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1><img src="images/logo.png" alt="SAHYOG Logo" class="logo-img">SAHYOG</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="disease.html">Crop Disease</a></li>
+                <li><a href="irrigation.html">Smart Irrigation</a></li>
+                <li><a href="market.html" class="active">Market Price</a></li>
+                <li><a href="#" id="login-btn">Sign In</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Market Price Optimizer</h1>
+        <p>Compare crop prices across markets to maximize your selling profits</p>
+    </section>
+
+    <!-- Market Price Section -->
+    <section class="market-price">
+        <div class="container">
+            <div class="market-container">
+                <div class="market-form">
+                    <h2>Compare Market Prices</h2>
+                    <p>Enter your crop details to find the best market prices</p>
+                    
+                    <div class="form-group">
+                        <label for="cropName">Crop Name</label>
+                        <select id="cropName">
+                            <option value="">Select Crop</option>
+                            <option value="wheat">Wheat</option>
+                            <option value="rice">Rice</option>
+                            <option value="tomato">Tomato</option>
+                            <option value="corn">Corn</option>
+                            <option value="cotton">Cotton</option>
+                            <option value="sugarcane">Sugarcane</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="quantity">Quantity (kg)</label>
+                        <input type="number" id="quantity" placeholder="Enter quantity">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="location">Your Location</label>
+                        <div class="location-input">
+                            <input type="text" id="location" placeholder="Enter your location">
+                            <button class="btn small" id="detectLocation"><i class="fas fa-location-arrow"></i> Detect</button>
+                        </div>
+                    </div>
+                    
+                    <button class="btn primary" id="comparePricesBtn">Compare Prices</button>
+                </div>
+                
+                <div class="market-result" id="marketResult">
+                    <h3>Price Comparison</h3>
+                    <div class="result-placeholder" id="priceResult">
+                        <i class="fas fa-chart-line"></i>
+                        <p>Enter crop details to compare market prices</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Trends -->
+    <section class="market-trends">
+        <div class="container">
+            <h2>Current Market Trends</h2>
+            <div class="trends-container">
+                <div class="trend-chart">
+                    <h3>Price Trends (Last 30 Days)</h3>
+                    <div class="chart-container">
+                        <canvas id="priceTrendChart"></canvas>
+                    </div>
+                    <div class="chart-controls">
+                        <button class="btn small active" data-crop="wheat">Wheat</button>
+                        <button class="btn small" data-crop="rice">Rice</button>
+                        <button class="btn small" data-crop="tomato">Tomato</button>
+                    </div>
+                </div>
+                
+                <div class="top-markets">
+                    <h3>Top Performing Markets</h3>
+                    <div class="market-list">
+                        <div class="market-item">
+                            <div class="market-info">
+                                <h4>Mumbai Wholesale Market</h4>
+                                <p>Highest prices for grains and vegetables</p>
+                            </div>
+                            <span class="rating">4.8/5</span>
+                        </div>
+                        <div class="market-item">
+                            <div class="market-info">
+                                <h4>Delhi Azadpur Mandi</h4>
+                                <p>Largest fruit market in Asia</p>
+                            </div>
+                            <span class="rating">4.7/5</span>
+                        </div>
+                        <div class="market-item">
+                            <div class="market-info">
+                                <h4>Bangalore Market Yard</h4>
+                                <p>Best for organic produce</p>
+                            </div>
+                            <span class="rating">4.6/5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Market Price Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const comparePricesBtn = document.getElementById('comparePricesBtn');
+            const detectLocationBtn = document.getElementById('detectLocation');
+            const marketResult = document.getElementById('marketResult');
+            const priceResult = document.getElementById('priceResult');
+            const locationInput = document.getElementById('location');
+            
+            // Detect location
+            detectLocationBtn.addEventListener('click', function() {
+                locationInput.placeholder = "Detecting location...";
+                
+                // Simulate location detection
+                setTimeout(() => {
+                    const locations = ["Mumbai", "Delhi", "Bangalore", "Chennai", "Kolkata", "Hyderabad"];
+                    const randomLocation = locations[Math.floor(Math.random() * locations.length)];
+                    locationInput.value = randomLocation;
+                    locationInput.placeholder = "Your location";
+                }, 1500);
+            });
+            
+            // Compare prices
+            comparePricesBtn.addEventListener('click', function() {
+                const cropName = document.getElementById('cropName').value;
+                const quantity = document.getElementById('quantity').value;
+                const location = document.getElementById('location').value;
+                
+                if (!cropName || !quantity || !location) {
+                    priceResult.innerHTML = '<div class="error">Please fill all fields</div>';
+                    return;
+                }
+                
+                // Simulate API call
+                priceResult.innerHTML = '<p>Fetching market prices...</p>';
+                
+                setTimeout(() => {
+                    // Generate random market data
+                    const markets = [
+                        { name: "Local Market", price: Math.floor(Math.random() * 20) + 40, distance: "0-5 km" },
+                        { name: "Nearest City Market", price: Math.floor(Math.random() * 20) + 45, distance: "20-30 km" },
+                        { name: "Regional Wholesale Market", price: Math.floor(Math.random() * 20) + 50, distance: "50-100 km" },
+                        { name: "State Capital Market", price: Math.floor(Math.random() * 20) + 55, distance: "100-200 km" }
+                    ];
+                    
+                    // Sort by price descending
+                    markets.sort((a, b) => b.price - a.price);
+                    
+                    const bestMarket = markets[0];
+                    const totalProfit = bestMarket.price * quantity;
+                    const localMarket = markets.find(m => m.name === "Local Market");
+                    const extraProfit = (bestMarket.price - localMarket.price) * quantity;
+                    
+                    let tableHTML = `
+                        <div class="price-comparison">
+                            <div class="best-option">
+                                <h4>Best Option: Sell at ${bestMarket.name}</h4>
+                                <p class="price">₹${bestMarket.price}/kg</p>
+                                <p>Your estimated profit for ${quantity}kg: <strong>₹${totalProfit}</strong></p>
+                                <p class="extra-profit">Potential extra profit: ₹${extraProfit} compared to local market</p>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Market</th>
+                                        <th>Price (₹/kg)</th>
+                                        <th>Distance</th>
+                                        <th>Total (₹)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+                    
+                    markets.forEach(market => {
+                        tableHTML += `
+                            <tr>
+                                <td>${market.name}</td>
+                                <td>₹${market.price}</td>
+                                <td>${market.distance}</td>
+                                <td>₹${market.price * quantity}</td>
+                            </tr>
+                        `;
+                    });
+                    
+                    tableHTML += `
+                                </tbody>
+                            </table>
+                            <div class="recommendation">
+                                <h5>Recommendation:</h5>
+                                <p>Based on your location and current market conditions, we recommend selling at <strong>${bestMarket.name}</strong> for the highest profit.</p>
+                                <p>Transportation cost estimate: ₹${Math.floor(extraProfit * 0.2)} (approximately 20% of extra profit)</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    priceResult.innerHTML = tableHTML;
+                }, 2000);
+            });
+
+            // Price Trend Chart - ADD THIS CODE FOR THE GRAPH
+            const ctx = document.getElementById('priceTrendChart').getContext('2d');
+            let priceChart;
+            
+            // Generate dates for the last 30 days
+            const dates = [];
+            for (let i = 29; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                dates.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+            }
+            
+            // Sample data for different crops
+            const cropData = {
+                wheat: {
+                    label: 'Wheat (₹/kg)',
+                    data: [42, 43, 45, 44, 46, 47, 48, 47, 49, 50, 51, 52, 53, 52, 51, 50, 52, 53, 54, 55, 56, 55, 54, 53, 52, 51, 50, 49, 48, 47],
+                    borderColor: '#2ecc71',
+                    backgroundColor: 'rgba(46, 204, 113, 0.1)'
+                },
+                rice: {
+                    label: 'Rice (₹/kg)',
+                    data: [38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 59, 58, 57, 56, 55, 54, 53],
+                    borderColor: '#3498db',
+                    backgroundColor: 'rgba(52, 152, 219, 0.1)'
+                },
+                tomato: {
+                    label: 'Tomato (₹/kg)',
+                    data: [25, 26, 28, 30, 32, 35, 40, 45, 50, 55, 60, 65, 70, 65, 60, 55, 50, 45, 40, 35, 30, 28, 26, 25, 24, 23, 22, 21, 20, 19],
+                    borderColor: '#e74c3c',
+                    backgroundColor: 'rgba(231, 76, 60, 0.1)'
+                }
+            };
+            
+            // Initialize chart with wheat data
+            function initChart(cropType) {
+                if (priceChart) {
+                    priceChart.destroy();
+                }
+                
+                const data = cropData[cropType];
+                
+                priceChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: dates,
+                        datasets: [{
+                            label: data.label,
+                            data: data.data,
+                            borderColor: data.borderColor,
+                            backgroundColor: data.backgroundColor,
+                            borderWidth: 3,
+                            pointRadius: 4,
+                            pointBackgroundColor: data.borderColor,
+                            pointBorderColor: '#fff',
+                            pointHoverRadius: 6,
+                            fill: true,
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top'
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                                titleFont: {
+                                    size: 14
+                                },
+                                bodyFont: {
+                                    size: 13
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.05)'
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return '₹' + value;
+                                    }
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        },
+                        interaction: {
+                            mode: 'nearest',
+                            axis: 'x',
+                            intersect: false
+                        }
+                    }
+                });
+            }
+            
+            // Initialize with wheat data
+            initChart('wheat');
+            
+            // Add event listeners to crop buttons
+            const cropButtons = document.querySelectorAll('.chart-controls .btn');
+            cropButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    cropButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Update chart with selected crop data
+                    const cropType = this.getAttribute('data-crop');
+                    initChart(cropType);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

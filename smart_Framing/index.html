@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAHYOG</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/pages.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Additional styles for logo */
+        .logo-img {
+            height: 40px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .nav-brand h1 {
+            display: flex;
+            align-items: center;
+        }
+        .footer-logo {
+            height: 30px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        /* Hero section with background image - UPDATED */
+        .hero {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center content horizontally */
+            min-height: 80vh;
+            padding: 2rem 0; /* Remove horizontal padding */
+            background-image: url('images/hero-bg.jpg');
+            background-size: cover; /* Changed to cover to fill the container */
+            background-position: center;
+            color: rgba(244, 243, 243, 0.99);
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 2rem;
+            text-align: center; /* Center text for better alignment */
+        }
+        
+        .hero-content h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            font-weight: 700;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-content p {
+            font-size: 1.4rem;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center; /* Center buttons */
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn.primary {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .btn.primary:hover {
+            background-color: #388E3C;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn.secondary {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn.secondary:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero-image {
+            display: none;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .hero-content h2 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-content h2 {
+                font-size: 2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 80%;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-content h2 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="home-page">
+    <!-- Header Section -->
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1><img src="images/logo.png" alt="Smart Agriculture Logo" class="logo-img">Smarter Farming</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="disease.html">Crop Disease</a></li>
+                <li><a href="irrigation.html">Smart Irrigation</a></li>
+                <li><a href="market.html">Market Price</a></li>
+                <li><a href="#" id="login-btn">Sign In</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Smart Farming Solutions for Modern Agriculture</h2>
+            <p>Optimize irrigation, detect crop diseases, and maximize your profits with our AI-powered platform designed for farmers</p>
+            <div class="hero-buttons">
+                <a href="disease.html" class="btn primary">Get Started</a>
+                <a href="#features" class="btn secondary">Learn More</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="images/hero-bg.jpg" alt="Smart Irrigation System">
+        </div>
+    </section>
+
+    <!-- Features Overview -->
+    <section id="features" class="features">
+        <h2>Our Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h3>Crop Disease Prediction</h3>
+                <p>Upload images of your crops to detect diseases early using our advanced AI model.</p>
+                <a href="disease.html" class="feature-link">Try Now <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-water"></i>
+                </div>
+                <h3>Smart Irrigation</h3>
+                <p>Calculate optimal water requirements based on soil type, weather, and crop conditions.</p>
+                <a href="irrigation.html" class="feature-link">Try Now <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Market Price Optimizer</h3>
+                <p>Compare crop prices across markets to maximize your selling profits and reduce waste.</p>
+                <a href="market.html" class="feature-link">Try Now <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <h2>How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Sign Up</h3>
+                <p>Create an account to save your data and access advanced features</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Use Our Tools</h3>
+                <p>Access our specialized tools for disease detection, irrigation, and market analysis</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Improve Your Yield</h3>
+                <p>Implement our recommendations to increase productivity and profits</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <h2>What Farmers Say</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <p>"This platform helped me detect tomato blight early and save my entire crop!"</p>
+                </div>
+                <div class="testimonial-author">
+                    <h4>Rajesh Kumar</h4>
+                    <p>Wheat Farmer, Punjab</p>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <p>"The irrigation calculator reduced my water usage by 30% while improving yield."</p>
+                </div>
+                <div class="testimonial-author">
+                    <h4>Priya Singh</h4>
+                    <p>Rice Farmer, Kerala</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><img src="images/logo.png" alt="Smart Agriculture Logo" class="footer-logo"> Sahyog</h3>
+                <p>Helping farmers make smart decisions for irrigation, crop health, and market profits.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="disease.html">Crop Disease</a></li>
+                    <li><a href="irrigation.html">Smart Irrigation</a></li>
+                    <li><a href="market.html">Market Price</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect With Us</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 SAHYOG. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="scripts/script.js"></script>
+</body>
+</html>

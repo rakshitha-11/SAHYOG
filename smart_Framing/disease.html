@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Disease Detection - Smart Irrigation System</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/pages.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Logo styling */
+        .logo-img {
+            height: 40px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        .nav-brand h1 {
+            display: flex;
+            align-items: center;
+            color: #4CAF50;
+            font-weight: 700;
+        }
+        
+        /* Disease prediction section */
+        .disease-prediction {
+            padding: 4rem 0;
+        }
+        
+        .disease-container {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .upload-area, .result-area {
+            flex: 1;
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .upload-area {
+            border: 2px dashed #4CAF50;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area:hover {
+            background: rgba(76, 175, 80, 0.05);
+            border-color: #2E7D32;
+        }
+        
+        .upload-area i {
+            font-size: 3rem;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+        
+        .upload-area h3 {
+            color: #2E7D32;
+            margin-bottom: 0.5rem;
+        }
+        
+        .upload-area p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        .result-area {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .result-area h3 {
+            color: #2E7D32;
+            margin-bottom: 1.5rem;
+        }
+        
+        .placeholder-result {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #666;
+        }
+        
+        .placeholder-result i {
+            font-size: 3rem;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+        
+        .image-preview {
+            text-align: center;
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+            display: none;
+        }
+        
+        .image-preview img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Tips section with background image */
+        .tips-section {
+            position: relative;
+            padding: 4rem 0;
+            background-image: url('images/bigdisease.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+        }
+        
+        .tips-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1;
+        }
+        
+        .tips-section .container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .tips-section h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .tip-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            color: #333;
+        }
+        
+        .tip-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .tip-card i {
+            font-size: 2.5rem;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+        
+        .tip-card h3 {
+            color: #2E7D32;
+            margin-bottom: 1rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .disease-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body class="disease-page">
+    <!-- Header Section -->
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1><img src="images/logo.png" alt="SAHYOG Logo" class="logo-img">SAHYOG</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="disease.html" class="active">Crop Disease</a></li>
+                <li><a href="irrigation.html">Smart Irrigation</a></li>
+                <li><a href="market.html">Market Price</a></li>
+                <li><a href="#" id="login-btn">Sign In</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Crop Disease Detection</h1>
+        <p>Upload images of your crops to detect diseases early using our AI-powered system</p>
+    </section>
+
+    <!-- Disease Prediction Section -->
+    <section class="disease-prediction">
+        <div class="container">
+            <div class="disease-container">
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>Upload Crop Image</h3>
+                    <p>Click to upload an image of your crop (leaves, stems, or fruits)</p>
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                    <button class="btn primary" id="uploadBtn">Select Image</button>
+                </div>
+                <div class="result-area" id="resultArea">
+                    <h3>Analysis Result</h3>
+                    <div id="diseaseResult">
+                        <div class="placeholder-result">
+                            <i class="fas fa-microscope"></i>
+                            <p>Upload an image to get analysis results</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="image-preview" id="imagePreview">
+                <img id="previewImg" src="" alt="Preview">
+                <button class="btn primary" id="analyzeBtn">Analyze Image</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tips Section -->
+    <section class="tips-section">
+        <div class="container">
+            <h2>Tips for Best Results</h2>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <i class="fas fa-camera"></i>
+                    <h3>Use Clear Images</h3>
+                    <p>Take photos in good lighting with focus on the affected area</p>
+                </div>
+                <div class="tip-card">
+                    <i class="fas fa-leaf"></i>
+                    <h3>Focus on Leaves</h3>
+                    <p>Most diseases show clear symptoms on leaves first</p>
+                </div>
+                <div class="tip-card">
+                    <i class="fas fa-ruler-combined"></i>
+                    <h3>Multiple Angles</h3>
+                    <p>Take pictures from different angles for better accuracy</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Image upload and preview functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const imagePreview = document.getElementById('imagePreview');
+            const previewImg = document.getElementById('previewImg');
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const diseaseResult = document.getElementById('diseaseResult');
+            
+            // Open file dialog when clicking upload area or button
+            uploadArea.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            uploadBtn.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent triggering the uploadArea click event
+                fileInput.click();
+            });
+            
+            // Handle file selection
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        previewImg.src = e.target.result;
+                        imagePreview.style.display = 'block';
+                        
+                        // Scroll to preview section
+                        imagePreview.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+            
+            // Analyze button functionality
+            analyzeBtn.addEventListener('click', function() {
+                // Simulate analysis process
+                diseaseResult.innerHTML = `
+                    <div class="analysis-result">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #4CAF50; margin-bottom: 1rem;"></i>
+                        <p>Analyzing image...</p>
+                    </div>
+                `;
+                
+                // Simulate API call delay
+                setTimeout(() => {
+                    // Sample result (would be replaced with actual API response)
+                    diseaseResult.innerHTML = `
+                        <div class="analysis-result success">
+                            <i class="fas fa-check-circle" style="font-size: 2.5rem; color: #4CAF50; margin-bottom: 1rem;"></i>
+                            <h4>Analysis Complete</h4>
+                            <p><strong>Detected:</strong> Early Blight</p>
+                            <p><strong>Confidence:</strong> 92%</p>
+                            <div class="recommendation">
+                                <h5>Recommendation:</h5>
+                                <p>Apply copper-based fungicide. Remove affected leaves to prevent spread.</p>
+                            </div>
+                        </div>
+                    `;
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
